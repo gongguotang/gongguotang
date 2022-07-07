@@ -1,0 +1,356 @@
+# jemdoc: menu{MENU}{atoms.html}
+# jemdoc: addpackage{amsmath}
+# jemdoc: addpackage{amssymb}
+# jemdoc: addpackage{amsthm}
+# jemdoc: addpackage{color}
+# jemdoc: addpackage{bm}
++ +
+ 
+= Inspiring Examples
+Prior information to exploit: there are only a few active parameters
+(*sparse!*), the exact number of which is unknown.
+
+
+=== Example 1: Compressive Sensing
+~~~
+{}{img_left}{pic/cs.png}{alt text}{600}{200}{pic/cs.png}
+~~~
+
+- In compressive sensing, a sparse signal is simple: it is a parsimonious
+sum of the canonical basis vectors  $\{\mathbf{e}_k\}$
+- These basis vectors are building blocks for sparse signals.
+- The $\ell_1$ norm enforces sparsity w.r.t. the canonical basis vectors.
+- The unit $\ell_1$ norm ball is conv$\{\pm\mathbf{e}_k\}$ the convex hull of the basis vectors.
+-  A hyperplane will most likely touch the $\ell_1$ norm ball at spiky points,
+which correspond to sparse solutions.
+- This is the geometrical reason that minimize $\|\mathbf{x}\|_1$ subject to $\mathbf{y} = A\mathbf{x}$
+will produce a sparse solution.
+
+
+
+=== Example 2: Low Rank Matrix Recovery
+~~~
+{}{img_left}{pic/mp.png}{alt text}{600}{200}{pic/cs.png}
+~~~
+
+- A low rank matrix has a sparse representation in terms of unit-norm,
+rank-one matrices.
+- The dictionary $D=\{\mathbf{u}\mathbf{v}^T: \|\mathbf{u}\|_2=\|\mathbf{v}\|_2=1\}$    is continuously
+parameterized and has infinite number of primitive signals.
+- We enforce low-rankness using the nuclear norm:
+  \(
+  \|X\|_* = \min\{\|\bm{\sigma}\|_1: X=\sum_{i}\sigma_i\mathbf{u}_i\mathbf{v}_i^T\}
+  \)
+  
+- The nuclear norm ball is the convex hull of unit-norm, rank-one matrices.
+- A hyperplane touches the nuclear norm ball at low-rank solutions.
+
+
+
+=== Example 3: Line Spectral Estimation
+~~~
+{}{img_left}{pic/line.png}{alt text}{600}{200}{pic/line.png}
+~~~
+- A line spectral signal is composed of a small number of comlex sinusoids.
+- The atoms are  trigonometric moment curves
+$
+\mathbf{a}(f)=[1~~e^{i2\pi f}~~\cdots~~e^{i(n-1)2\pi f}]^T
+$
+continuously
+parameterized by $f\in[0,1]$
+- We enforce spectral sparseness using the atomic norm induced by those trigonometric moment curves $\mathbf{a}(f)$:
+  \(
+  \|\mathbf{x}\|_{\mathcal{A}} = \inf\{\|\mathbf{c}\|_1: \mathbf{x}=\sum_{i}c_i\mathbf{a}(f_i)\}
+  \)
+- This atomic norm ball is the convex hull of  trigonometric moment curves $\mathbf{a}(f)$.
+- A hyperplane touches the atomic norm ball at sparse line spectral signals.
+ 
+ 
+ 
+
+=== Example 4: Low Rank Tensor Decomposition
+~~~
+{}{img_left}{pic/tensor.png}{alt text}{600}{200}{pic/tensor.png}
+~~~
+- A low rank tensor is composed of a small number of unit-norm rank-one tensors
+- The atoms are  unit-norm rank-one tensors
+$
+[\mathbf{u}\otimes\mathbf{v}\otimes\mathbf{w}]_{ijk}:=u_iv_jw_k
+$
+continuously
+parameterized by $\mathbf{u}\in\mathbb{S}^{n-1}, \mathbf{v}\in\mathbb{S}^{n-1}, \mathbf{w}\in\mathbb{S}^{n-1}$.
+- We enforce low-rankness using the tensor nuclear norm  induced by those unit-norm rank-one tensors:
+  \(
+  \|T\|_{*} = \inf\{\|\bm{\lambda}\|_1: T=\sum_{i}\lambda_i\mathbf{u}_i\otimes\mathbf{v}_i\otimes\mathbf{w}_i\}
+  \)
+- The tensor nuclear norm ball is the convex hull of   unit-norm rank-one tensors.
+- A hyperplane touches the tensor nuclear norm ball at low rank tensors. 
+ 
+ 
+= General Atomic Norm 
+
+=== Definition of Atomic Norm
+- Consider a dictionary or set of atoms $\mathcal{A}=\{\bm{\psi}(\nu):\nu\in N\}\subset \mathbb{R}^n$ or $\mathbb{C}^n$.
+- The parameter space $N$ can be finite, countably infinite, or continuous.
+- The atoms $\{\bm{\psi}(\nu)\}$ are building blocks for signal representation.
+- Examples: canonical basis vectors, rank-one matrices, rank-one tensors, trigonometric moment curves, a finite dictionary...
+- Prior information: the signal is simple w.r.t. $\mathcal{A}$, i.e., it has a parsimonious
+decomposition using atoms in $\mathcal{A}$:
+$\mathbf{x}=\sum_{\ell=1}^r c_\ell \bm{\psi}(\nu_\ell)$
+
+- The atomic norm of any $\mathbf{x}$ is defined as (Chandrasekaran, Recht, Parrilo,
+& Willsky, 2010)
+\(
+\|\mathbf{x}\|_{\mathcal{A}}=\inf\{\|\mathbf{c}\|_1: \mathbf{x}=\sum_{\ell=1}^r c_\ell \bm{\psi}(\nu_\ell)\}=\inf\{t>0: \mathbf{x}\in t \text{conv}(\mathcal{A})\}
+\)
+- The unit ball of the atomic norm is the convex hull of the atomic set $\mathcal{A}$
+~~~
+{}{img_left}{pic/atom.png}{alt text}{800}{200}{pic/atom.png}
+~~~
+
+=== Definition of Dual Atomic Norm
+- The dual atomic norm is defined as
+\(
+\|\mathbf{q}\|_{\mathcal{A}}^*:= \sup_{\mathbf{x}:\|\mathbf{x}\|_{\mathcal{A}}\leq 1} |\langle \mathbf{x},\mathbf{q}\rangle|=\sup_{\mathbf{a}\in\mathbf{A}}\left|\langle \mathbf{a},\mathbf{q}\rangle\right|
+\)
+
+- Example: for *line spectral atoms*,  the dual atomic norm is the maximal magnitude of a complex trigonometric polynomial
+\(
+\|\mathbf{q}\|_{\mathcal{A}}^*=\sup_{\mathbf{a}\in\mathbf{A}}\left|\langle \mathbf{a},\mathbf{q}\rangle\right|=\sup_{\nu\in[0,1]}\left|\sum_{\ell=0}^{n-1}q_\ell e^{j2\pi \ell \nu} \right|
+\)
+
+=== View Atomic Norm Minimization as Measure Optimization 
+- Rewrite the decomposition $\mathbf{x}=\sum_{\ell=1}^r c_\ell \bm{\psi}(\nu_\ell)$ as
+$
+\mathbf{x}=\int_{N} \bm{\psi}(\nu) \mu(d\nu)
+$
+
+- Here $\mu=\sum_{k=1}^r c_k\delta(\nu-nu_k)$ is a discret signed measure defined on the parameter space $N$.
+ 
+- The atomic norm $\|\mathbf{x}\|_{\mathcal{A}}$ equals the optimal value of an infinite dimensional $\ell_1$ minimization:
+\(
+\operatorname*{minimize}\limits_{\mu\in\mathcal{M}(N)}\|\mu\|_{TV} \operatorname{\ subject\ to\ }\mathbf{x}=\int_N \bm{\psi}(\nu)\mu(d\nu)
+\)
+
+- Here $\mathcal{M}(N)$ is the set of all measures defined on $N$, and $\|\mu\|_{TV}$ is the *total variation norm* of a measure.
+
+- When $\mu=\sum_{k=1}^r c_k\delta(\nu-\nu_k)$ is a discret measure, $\|\mu\|_{TV}=\sum_{k=1}^r  |c_k|=\|\mathbf{c}\|_1$.
+ 
+- When $\mu$ has a density function $\rho(\nu)$, $\|\mu\|_{TV}=\int_N |\rho(\nu)| d\nu=\|\rho(\nu)\|_{L_1}$
+
+- The equivalent measure optimization definition allows us to apply
+optimization theory and convex analysis to study atomic norm problems.
+
+
+= Popular Atomic Norm Problems
+
+- *Atomic decomposition*:
+ Given a signal, which decompositions achieve
+the atomic norm?
+
+- *Recovery from noise-free linear measurements*: How many measurements
+do we need to recover simple signal?
+
+- *Denoising*:
+ How well can we denoise a signal by exploiting its simplicity
+structure?
+
+- *Support recovery*:
+ How well can we approximately recover the active
+parameters from noisy data?
+
+- *Resolution limit*:
+ What's the fundamental limit in resolving active
+parameters?
+
+- *Computational methods*:
+How shall we solve atomic norm minimization
+problems?
+
+
+
+
+
+= Atomic Decomposition
+
+Consider a parameterized set of atoms $\mathcal{A}=\{\bm{\psi}(\nu),\nu\in N\}$ and a signal $\mathbf{x}$ with decomposition
+$
+\mathbf{x}=\sum_{k=1}^r c_k^\star \bm{\psi}(\nu_k^\star)
+$
+under what conditions on the parameters $\{c_k^\star, \nu_k^\star\}$, we have
+$
+\|\mathbf{x}\|_{\mathcal{A}}=\|\mathbf{c}^\star\|_1?
+$
+
+=== Examples
+- For $\mathcal{A}=\{\pm \mathbf{e}_k\}$, this question is trival.
+- For $\mathcal{A}=\{\mathbf{u}\mathbf{v}^T:\|\mathbf{u}\|_2=\|\mathbf{v}\|_2=1\}$, the composing atoms should be
+orthogonal (Singular Value Decomposition).
+- For $\mathcal{A}=\{\pm \mathbf{d}_k\}$, a sufficient condition is that the dictionary matrix $D$
+satisfies restricted isometry property.
+
+
+=== Optimality condition
+- Define $\mu^\star=\sum_{k=1}^r c_k^\star \delta(\nu-\nu_k^\star)$. We are asking when $\mu^\star$ is the optimal solution of
+\(
+\operatorname*{minimize}\limits_{\mu\in\mathcal{M}(N)}\|\mu\|_{TV} \operatorname{\ subject\ to\ }\mathbf{x}=\int_N \bm{\psi}(\nu)\mu(d\nu)
+\)
+- Atomic decomposition studies the parameter estimation ability of total
+variation minimization in the full-data, noise-free case.
+- The dual problem:
+\(
+\operatorname*{maximize} \langle\mathbf{q},\mathbf{x}\rangle \operatorname{\ subject\ to\ } \underbrace{|\langle\mathbf{q},\bm{\psi}(\nu)\rangle|\leq 1, \forall \nu\in N}_{\|\mathbf{q}\|_{\mathcal{A}^*}\leq 1}
+\)
+- Optimal condition: $\mu^\star$ is optimal if and only if there exists a dual
+certificate $\mathbf{q}$ such that
+\(
+ \begin{array}{ll}
+&|\langle\mathbf{q},\bm{\psi}(\nu)\rangle| ~\leq~ 1, \forall \nu\in N\\
+&~~~~~~~\mathbf{q},\mathbf{x}\rangle ~=~ \|\mu^\star\|_{TV}
+ \end{array}
+\)
+- Define a function $q(\nu)=\langle\mathbf{q},\bm{\psi}(\nu)\rangle$. The optimal condition becomes
+\(
+ \begin{array}{ll}
+\text{dual~feasibility}:&\|q(\nu)\|_{L_\infty} \leq1 \\
+\text{complementary~slackness}:&  q(\nu_k^\star)=\operatorname*{sign}(c_k^\star), k\in[r]
+ \end{array}
+\)
+
+- To ensure the uniqueness of the optimal solution $\mu^\star$, we strengthen the
+optimality condition to:
+
+\(
+ \begin{array}{ll}
+\text{strict~boundeness}:&\|q(\nu)\|_{L_\infty} <1, \nu\in N/\{\nu_k^\star,k\in[r]\} \\
+\text{interpolation}:&  q(\nu_k^\star)=\operatorname*{sign}(c_k^\star), k\in[r]
+ \end{array}
+\)
+
+~~~
+{}{img_left}{pic/BIP.png}{alt text}{400}{150}{pic/BIP.png}
+~~~
+
+
+= General Theory
+
+~~~
+{}{img_left}{pic/inverse.png}{alt text}{260}{200}{pic/inverse.png}
+
+Atomic norm approach, as a new developing tool, has attracted considerable attention in signal processing, machine learning, and statistics.
+Given a set $\mathcal{A}$ of atoms, the atomic norm $\|\cdot\|_{\mathcal{A}}$ is an abstraction of $\ell_1$-type regularization that favors simple models. 
+Using the notion of descent cones,
+the authors of [http://arxiv.org/abs/1012.0621 "The Convex Geometry of Linear Inverse Problems"] 
+ argued that the atomic norm is the *best possible convex proxy* for recovering simple models. 
+ The paper [http://arxiv.org/abs/1012.0621 "The Convex Geometry of Linear Inverse Problems"] 
+provides a general framework to convert notions of simplicity into convex penaltu functions, 
+resulting in convex optimization solution to linear inverse problems.
+~~~ 
+ 
+
+- [http://arxiv.org/abs/1012.0621 The Convex Geometry of Linear Inverse Problems] (2010) by Venkat Chandrasekaran, Benjamin Recht, Pablo A. Parrilo, Alan S. Willsky 
+ 
+
+= Computational Methods
+- [http://arxiv.org/pdf/1404.5692.pdf Forward - Backward Greedy Algorithms for Atomic Norm Regularization] (2015) by Nikhil Rao, Parikshit Shah, Stephen Wright
+- [http://www.seas.ucla.edu/~vandenbe/publications/nucnrm.pdf Interior-point method for nuclear norm approximation with application to system identification] (2009) by Zhang Liu and Lieven Vandenberghe
+
+
+= Line Spectral Signals/Sparse Spikes
+~~~
+{}{img_left}{pic/line_spectral.png}{alt text}{700}{200}{pic/line_spectral.png}
+~~~
+
+=== Decomposition
+- [http://arxiv.org/pdf/1601.03712.pdf Super-Resolution of Complex Exponentials from Modulations with Unknown Waveforms] (2016) by Dehui Yang, Gongguo Tang, Michael B. Wakin
+- [http://arxiv.org/abs/1203.5871 Towards a mathematical theory of super-resolution] (2012) by Emmanuel Candes, Carlos Fernandez-Granda
+- [http://arxiv.org/pdf/1506.03144.pdf Superresolution without Separation] (2015) by Geoffrey Schiebinger, Elina Robeva and Benjamin Recht
+- [http://arxiv.org/pdf/1507.07034.pdf Super-Resolution of Point Sources via Convex Programming] (2015) by Carlos Fernandez-Granda
+ 
+
+
+=== Denoising/Completion
+- [http://arxiv.org/pdf/1407.2490.pdf On gridless sparse methods for line spectral estimation from complete and incomplete data] (2015) by Zai Yang,  Lihua Xie
+- [http://arxiv.org/pdf/1306.6909v3.pdf Exact Support Recovery for Sparse Spikes Deconvolution] (2012) by Vincent Duval and Gabriel Peyre
+- [http://arxiv.org/abs/1207.6053 Compressed Sensing off the Grid] (2012) by Gongguo Tang, Badri Narayan Bhaskar, Parikshit Shah, Benjamin Recht
+- [https://pdfs.semanticscholar.org/bc36/335cf21ccdac2fd107fa945da724bc281668.pdf Compressive Two-Dimensional Harmonic Retrieval via Atomic Norm Minimization]  (2015) by Yuejie Chi, Yuxin Chen
+- [http://arxiv.org/pdf/1204.0562 Atomic norm denoising with applications to line spectral estimation] (2012) by Badri Narayan Bhaskar, Gongguo Tang, Benjamin Recht
+- [http://arxiv.org/pdf/1408.2242 Off-the-Grid Line Spectrum Denoising and Estimation with Multiple Measurement Vectors] (2014) by Yuanxin Li, Yuejie Chi
+- [http://inside.mines.edu/~gtang/pdf/2014_RLSE_v2.pdf Robust Line Spectral Estimation] (2014) by Gongguo Tang, Parikshit Shah, Badri N. Bhaskar, Benjamin Recht
+- [http://arxiv.org/pdf/1303.4348 Near Minimax Line Spectral Estimation] (2013) by Gongguo Tang, Badri N. Bhaskar, Benjamin Recht
+- [http://arxiv.org/pdf/1503.08782 Robust Recovery of Positive Stream of Pulses] (2015) by Tamir Bendory
+
+
+=  Sparse Signals 
+~~~
+{}{img_left}{pic/compressed_sensing.png}{alt text}{700}{200}{pic/compressed_sensing.png}
+~~~
+
+- [http://arxiv.org/pdf/1408.5750.pdf Enhancing sparsity and resolution via reweighted atomic norm minimization] (2015) by Zai Yang and Lihua Xie
+
+
+= Low Rank Matrices
+~~~
+{}{img_left}{pic/lm.png}{alt text}{700}{200}{pic/lm.png}
+~~~
+
+
+- [http://arxiv.org/pdf/0809.1260.pdf Necessary and Sufficient Conditions for Success of the Nuclear Norm Heuristic for Rank Minimization] (2008) by Benjamin Recht, Weiyu Xu, Babak Hassibi  
+- [http://arxiv.org/abs/0805.4471 Exact Matrix Completion via Convex Optimization] (2008) by Emmanuel J. Candes, Benjamin Recht
+
+
+
+=  Low Rank Tensor 
+~~~
+{}{img_left}{pic/lt.png}{alt text}{750}{250}{pic/lt.png}
+~~~
+
+- [http://jmlr.org/proceedings/papers/v37/tanga15.pdf Guaranteed Tensor Decomposition: A Moment Approach] (2015) by Gongguo Tang, Parikshit Shah
+- [http://arxiv.org/pdf/1602.08614.pdf  Overcomplete Tensor Decomposition via Convex Optimization] (2016) by Qiuwei Li, Ashley Prater, Lixin Shen, Gongguo Tang
+
+
+= Mixtures of Translations
+- [http://inside.mines.edu/~gtang/pdf/2013_mixture_v2.pdf Atomic Decomposition of Mixtures of Translation-Invariant Signals] (2013) by Gongguo Tang, Benjamin Recht 
+- [http://arxiv.org/abs/1412.3262 Robust Recovery of Stream of Pulses using Convex Optimization] (2014) by Tamir Bendory, Shai Dekel, Arie Feuer
+
+
+
+= Radar/DOA
+~~~
+{}{img_left}{pic/radar.png}{alt text}{400}{400}{pic/radar.png}
+~~~
+
+- [http://arxiv.org/pdf/1605.03230.pdf Super-Resolution MIMO Radar] (2016) by Reinhard Heckel
+- [https://www.semanticscholar.org/paper/Off-Grid-Direction-of-Arrival-Estimation-Based-on-Liang-Ying/5d685ff37968be6b3b5fbd040920d1941874f5fe/pdf  Off-Grid Direction of Arrival Estimation Based on Joint Spatial Sparsity for Distributed Sparse Linear Arrays] (2014) by Y Liang, R Ying, Z Lu, P Liu
+- [http://arxiv.org/pdf/1504.01662.pdf Grid-free compressive beamforming] (2015) by Angeliki Xenaki, Peter Gerstoft
+- [http://arxiv.org/abs/1411.6272 Super-Resolution Radar] (2014) by Reinhard Heckel, Veniamin I. Morgenshtern, Mahdi Soltanolkotabi
+- [https://arxiv.org/pdf/1009.4969v2 High Range Resolution Profiling for Stepped-Frequency Radar with Sparse Reconstruction] (2010) by Yang Hu, Yimin Liu, Huadong Meng
+
+
+
+= Spherical Harmonics
+~~~
+{}{img_left}{pic/spherical_harmonics.png}{alt text}{600}{300}{pic/spherical_harmonics.png}
+~~~
+
+- [http://arxiv.org/abs/1412.3284 Exact recovery of Dirac ensembles from the projection onto spaces of spherical harmonics] (2014) by Tamir Bendory, Shai Dekel, Arie Feuer
+
+
+= Linear Systems
+
+~~~
+{}{img_left}{pic/system.png}{alt text}{500}{200}{pic/system.png}
+~~~
+
+- [http://arxiv.org/pdf/1204.0590 Linear System Identification via Atomic Norm Regularization] (2012) by Parikshit Shah, Badri Narayan Bhaskar, Gongguo Tang, Benjamin Recht
+
+
+ 
+
+
+
+
+
+
+
+
